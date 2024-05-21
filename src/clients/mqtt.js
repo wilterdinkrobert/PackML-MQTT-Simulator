@@ -35,7 +35,7 @@ class Client extends events.EventEmitter {
             this.emit('connect');
         })
 
-        
+
         this.client.on('message', (topic, payload) => {
             that.emit('message', topic, payload);
         })
@@ -44,7 +44,7 @@ class Client extends events.EventEmitter {
         this.client.on('close', () => {
             this.emit('close');
         })
-        
+
         // emit errors
         this.client.on('error', (error) => {
             this.emit('error', error);
@@ -52,7 +52,8 @@ class Client extends events.EventEmitter {
     }
 
     publish(topic, message, opts) {
-        const payload = message == null || Number.isNaN(message) ? '' : message + ''
+        const data = message == null || Number.isNaN(message) ? '' : message + ''
+        const payload = JSON.stringify({ ts: Date.now(), value: data })
         return this.client.publish(topic, payload, opts)
     }
 
